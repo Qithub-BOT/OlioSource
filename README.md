@@ -1,3 +1,5 @@
+[![All Tests](https://github.com/Qithub-BOT/OlioSource/actions/workflows/all-tests.yml/badge.svg)](https://github.com/Qithub-BOT/OlioSource/actions/workflows/all-tests.yml)
+
 # OlioSource
 
 "oliosource" is a simple shell script that merges "sourced" shell scripts as a single script for your convenient distribution.
