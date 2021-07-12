@@ -43,6 +43,9 @@ fi
 
 parrotry "$@"
 
+```
+
+```shellsession
 $ cat ./path/to/parrotry.sh
 #!/bin/bash
 
@@ -51,6 +54,9 @@ parrotry() {
     echo "$@"
 }
 
+```
+
+```shellsession
 $ # Let's run!!
 $ oliosource ./path/to/main_script.sh
 #!/bin/bash
