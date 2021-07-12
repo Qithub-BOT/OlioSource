@@ -1,0 +1,67 @@
+#!/bin/sh
+# =============================================================================
+#  OlioSource
+# =============================================================================
+# -----------------------------------------------------------------------------
+#  Constants
+# -----------------------------------------------------------------------------
+FAILURE=1
+PATH_DIR_TARGET="$(cd "$(dirname "$1}")" && pwd)"
+NAME_FILE_TARGET="$(basename "$1")"
+PATH_FILE_TARGET="${PATH_DIR_TARGET}/${NAME_FILE_TARGET}"
+
+# -----------------------------------------------------------------------------
+#  Setup
+# -----------------------------------------------------------------------------
+# Temporary move to the target file directory
+oldPathReturn="$(pwd)"
+cd "$PATH_DIR_TARGET" || {
+    echo >&2 "No such directory. Path: ${PATH_DIR_TARGET}"
+
+    exit $FAILURE
+}
+trap 'cd "$oldPathReturn"' 0
+
+# -----------------------------------------------------------------------------
+#  Functions
+# -----------------------------------------------------------------------------
+excludeDisableComment() {
+    while IFS= read -r line; do
+        echo "${line}" | grep -v "^# shellcheck disable=SC1091"
+    done
+}
+
+excludeShebang() {
+    while IFS= read -r line; do
+        echo "$line" | grep -v "^#!"
+    done
+}
+
+isLineSourced() {
+    echo "$1" | grep -E '(\.|source)\s+.+' 1>/dev/null 2>/dev/null
+}
+
+traceLines() {
+    while IFS= read -r line; do
+        if (isLineSourced "$line"); then
+            file="$(echo "$line" | cut -d' ' -f2)"
+            excludeShebang <"$file"
+        else
+            echo "$line"
+        fi
+    done <"$1"
+}
+
+# -----------------------------------------------------------------------------
+#  Main
+# -----------------------------------------------------------------------------
+result=$(traceLines "$PATH_FILE_TARGET")
+result=$(echo "$result" | excludeDisableComment)
+
+if type shfmt 2>/dev/null 1>/dev/null; then
+    echo "$result" | shfmt -
+
+    exit $?
+fi
+
+echo "$result"
