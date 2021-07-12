@@ -71,13 +71,21 @@ parrotry "$@"
 
 ## Download
 
-* Raw script: `https://raw.githubusercontent.com/Qithub-BOT/OlioSource/master/oliosource`
+* Download Raw Source: https://git.io/oliosource
 
 ```bash
-curl -sL https://raw.githubusercontent.com/Qithub-BOT/OlioSource/master/oliosource
+curl -sL https://git.io/oliosource
 ```
 
 * To install the script, place it in any path at `$PATH` env variable and `chmod +x` to give access.
+
+```bash
+# Sample to install OlioSource under /usr/local/bin
+# (you may need sudo to chmod and mv)
+curl -sL https://git.io/oliosource > oliosource && \
+chmod +x oliosource && \
+mv ./oliosource /usr/local/bin
+```
 
 ## Remarks
 
